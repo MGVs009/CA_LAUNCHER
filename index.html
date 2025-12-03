@@ -1,70 +1,112 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Colégio Atlântico - Launcher</title>
-
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #0c1c3c, #11284d);
-            width: 100vw; height: 100vh;
+            width: 100vw;
+            height: 100vh;
             overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .logo-box {
+        /* Logo Section */
+        .logo-container {
             position: absolute;
             top: 32px;
             width: 100%;
             display: flex;
             justify-content: center;
         }
-        .logo-box img {
+
+        .logo-container img {
             width: 150px;
             height: auto;
-            filter: drop-shadow(0 4px 10px rgba(0,0,0,0.35));
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
             user-select: none;
         }
 
-        .title-box {
+        /* Title Section */
+        .title-container {
             position: absolute;
             top: 120px;
             width: 100%;
             text-align: center;
         }
-        .title-box h1 {
+
+        .title-container .subtitle {
+            font-size: 1.4rem;
+            color: #9bb3d6;
+            letter-spacing: 0.45em;
+            font-weight: 300;
+        }
+
+        .title-container .main-title {
             font-size: 3.3rem;
             color: #e8ecf5;
             letter-spacing: 0.25em;
             font-weight: 700;
-        }
-        .title-box h2 {
-            font-size: 1.4rem;
-            color: #9bb3d6;
-            letter-spacing: 0.45em;
             margin-top: 8px;
-            font-weight: 300;
+        }
+        .carousel-button svg {
+            width: 22px;
+            height: 22px;
+            stroke: #e8ecf5;
         }
 
-        .carousel {
+        /* Carousel Container */
+        .carousel-container {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 40px;
+            max-width: 90%;
         }
 
-        .apps-viewport {
-            width: 260px;
-            overflow: hidden;
-        }
-
-        .apps-track {
+        .carousel-button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
             display: flex;
-            transition: transform 0.35s ease;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
+        .carousel-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.05);
+        }
+
+        .carousel-viewport {
+            width: 280px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* App Card */
         .app-card {
             min-width: 100%;
             display: flex;
@@ -73,89 +115,102 @@
             user-select: none;
         }
 
-        .icon-circle {
-            width: 160px; height: 160px;
+        .app-icon {
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
             padding: 20px;
-            display: flex; align-items: center; justify-content: center;
-            background: radial-gradient(circle, rgba(255,255,255,0.1), rgba(0,0,0,0.55));
-            border: 1px solid rgba(255,255,255,0.12);
-            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
-            transition: 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.55));
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+            transition: all 0.25s ease;
             cursor: pointer;
         }
 
-        .icon-circle:hover {
+        .app-icon:hover {
             transform: scale(1.08) translateY(-3px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
         }
 
-        .icon-circle img {
-            width: 100%; height: 100%; object-fit: contain;
+        .app-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
             pointer-events: none;
         }
 
-        .app-label {
+        .app-name {
             margin-top: 12px;
             color: #dfe4ef;
             font-size: 1.1rem;
             opacity: 0.9;
         }
 
-        .carousel-button {
-            width: 52px; height: 52px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer;
-            transition: 0.25s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .carousel-button:hover {
-            background: rgba(255,255,255,0.18);
-            transform: scale(1.08);
-        }
-
-        .carousel-button svg {
-            width: 22px; height: 22px;
-            stroke: #e8ecf5;
-        }
-
-        .dots {
+        /* App Bar */
+        .app-bar {
             position: absolute;
-            bottom: 110px;
-            width: 100%;
+            bottom: 80px;
             display: flex;
-            gap: 8px;
+            gap: 12px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .app-bar-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            padding: 8px;
+            display: flex;
+            align-items: center;
             justify-content: center;
-        }
-
-        .dot {
-            width: 9px; height: 9px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
-            transition: 0.3s ease;
+            transition: all 0.2s ease;
         }
 
-        .dot.active {
-            width: 22px;
-            background: #4ca8ff;
+        .app-bar-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
+        .app-bar-icon.active {
+            background: rgba(76, 168, 255, 0.3);
+            border-color: #4ca8ff;
+        }
+
+        .app-bar-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        /* Help Button */
         .help-button {
             position: fixed;
-            bottom: 22px; right: 22px;
-            width: 58px; height: 58px;
+            bottom: 22px;
+            right: 22px;
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
             cursor: pointer;
             background: linear-gradient(135deg, #223a73, #16244d);
-            display: flex; align-items: center; justify-content: center;
-            border: 1px solid rgba(255,255,255,0.15);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.45);
-            transition: 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+            transition: all 0.2s ease;
         }
 
         .help-button:hover {
@@ -164,12 +219,15 @@
 
         .help-button svg {
             stroke: #ffbe57;
-            width: 26px; height: 26px;
+            width: 26px;
+            height: 26px;
         }
 
+        /* Leave Button */
         .leave-button {
             position: fixed;
-            bottom: 22px; left: 22px;
+            bottom: 22px;
+            left: 22px;
             padding: 10px 18px;
             border-radius: 999px;
             cursor: pointer;
@@ -179,108 +237,121 @@
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
-            border: 1px solid rgba(255,255,255,0.15);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.45);
-            transition: 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+            transition: all 0.2s ease;
         }
 
         .leave-button:hover {
             transform: translateY(-1px);
-            box-shadow: 0 14px 30px rgba(0,0,0,0.55);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
         }
     </style>
 </head>
 <body>
-
-    <div class="logo-box">
+    <!-- Logo -->
+    <div class="logo-container">
         <img src="colegio_atlantico_logo.png" alt="Colégio Atlântico Logo">
     </div>
 
-    <div class="title-box">
-        <h2>COLÉGIO ATLÂNTICO</h2>
-        <h1>LAUNCHER</h1>
+    <!-- Title -->
+    <div class="title-container">
+        <h2 class="subtitle">COLÉGIO ATLÂNTICO</h2>
+        <h1 class="main-title">LAUNCHER</h1>
     </div>
 
-    <div class="carousel">
-        <button class="carousel-button" id="btn-prev">
-            <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Carousel -->
+    <div class="carousel-container">
+        <!-- Previous Button -->
+        <button class="carousel-button" id="prevButton" aria-label="Previous app">
+            <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <polyline points="15 18 9 12 15 6"></polyline>
             </svg>
         </button>
 
-        <div class="apps-viewport">
-            <div class="apps-track" id="track">
-
+        <!-- Carousel Viewport -->
+        <div class="carousel-viewport">
+            <div class="carousel-track" id="carouselTrack">
+                <!-- Google -->
                 <div class="app-card">
-                    <div class="icon-circle" data-url="https://www.google.com">
-                        <img src="google.png" alt="Google" />
+                    <div class="app-icon" data-url="https://www.google.com">
+                        <img src="google.png" alt="Google">
                     </div>
-                    <p class="app-label">Google</p>
+                    <p class="app-name">Google</p>
                 </div>
 
+                <!-- YouTube -->
                 <div class="app-card">
-                    <div class="icon-circle" data-url="https://www.youtube.com">
-                        <img src="youtube.png" alt="YouTube" />
+                    <div class="app-icon" data-url="https://www.youtube.com">
+                        <img src="youtube.png" alt="YouTube">
                     </div>
-                    <p class="app-label">YouTube</p>
+                    <p class="app-name">YouTube</p>
                 </div>
 
+                <!-- Aula Digital -->
                 <div class="app-card">
-                    <div class="icon-circle" data-url="https://auladigital.com">
-                        <img src="aula_digital.png" alt="Aula Digital" />
+                    <div class="app-icon" data-url="https://auladigital.com">
+                        <img src="aula_digital.png" alt="Aula Digital">
                     </div>
-                    <p class="app-label">Aula Digital</p>
+                    <p class="app-name">Aula Digital</p>
                 </div>
 
+                <!-- Escola Virtual -->
                 <div class="app-card">
-                    <div class="icon-circle" data-url="https://www.escolavirtual.pt">
-                        <img src="escola_virtual.png" alt="Escola Virtual" />
+                    <div class="app-icon" data-url="https://www.escolavirtual.pt">
+                        <img src="escola_virtual.png" alt="Escola Virtual">
                     </div>
-                    <p class="app-label">Escola Virtual</p>
+                    <p class="app-name">Escola Virtual</p>
                 </div>
 
+                <!-- BlinkLearning -->
                 <div class="app-card">
-                    <div class="icon-circle" data-url="https://www.blinklearning.com/portal/home">
-                        <img src="blinklearning.png" alt="BlinkLearning" />
+                    <div class="app-icon" data-url="https://www.blinklearning.com/portal/home">
+                        <img src="blinklearning.png" alt="BlinkLearning">
                     </div>
-                    <p class="app-label">BlinkLearning</p>
+                    <p class="app-name">BlinkLearning</p>
                 </div>
 
+                <!-- Microsoft Office -->
                 <div class="app-card">
-                    <div class="icon-circle" data-url="https://www.office.com">
-                        <img src="microsoft.png" alt="Microsoft Office" />
+                    <div class="app-icon" data-url="https://www.office.com">
+                        <img src="microsoft.png" alt="Microsoft Office">
                     </div>
-                    <p class="app-label">Microsoft Office</p>
+                    <p class="app-name">Microsoft Office</p>
                 </div>
 
+                <!-- Teams -->
                 <div class="app-card">
-                    <div class="icon-circle" data-url="https://teams.microsoft.com/v2/">
-                        <img src="teams.png" alt="Teams" />
+                    <div class="app-icon" data-url="https://teams.microsoft.com/v2/">
+                        <img src="teams.png" alt="Teams">
                     </div>
-                    <p class="app-label">Teams </p>
+                    <p class="app-name">Teams</p>
                 </div>
 
+                <!-- Cambridge GO -->
                 <div class="app-card">
-                    <div class="icon-circle" data-url="https://www.cambridge.org/go/login">
-                        <img src="cambridgego.png" alt="Cambridge GO" />
+                    <div class="app-icon" data-url="https://www.cambridge.org/go/login">
+                        <img src="cambridgego.png" alt="Cambridge GO">
                     </div>
-                    <p class="app-label">Cambridge GO</p>
+                    <p class="app-name">Cambridge GO</p>
                 </div>
-
             </div>
         </div>
 
-        <button class="carousel-button" id="btn-next">
-            <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Next Button -->
+        <button class="carousel-button" id="nextButton" aria-label="Next app">
+            <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
                 <polyline points="9 18 15 12 9 6"></polyline>
             </svg>
         </button>
     </div>
+    
+    <!-- App Bar -->
+    <div class="app-bar" id="appBar"></div>
 
-    <div class="dots" id="dots"></div>
-
-    <button class="help-button" id="btn-help">
-        <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Help Button -->
+    <button class="help-button" id="helpButton" aria-label="Help">
+        <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="10"></circle>
             <path d="M9 9a3 3 0 015.8 1c0 2-3 3-3 3"></path>
             <line x1="12" y1="17" x2="12.01" y2="17"></line>
@@ -288,59 +359,140 @@
     </button>
 
     <script>
-        window.addEventListener("DOMContentLoaded", () => {
-            const track = document.getElementById("track");
-            const dotsContainer = document.getElementById("dots");
-            const cards = track.children;
-            const total = cards.length;
-            let index = 0;
+        // Wait for DOM to load
+        document.addEventListener("DOMContentLoaded", initializeLauncher);
 
-            // dots
-            for (let i = 0; i < total; i++) {
-                const dot = document.createElement("div");
-                dot.className = "dot" + (i === 0 ? " active" : "");
-                dot.addEventListener("click", () => {
-                    index = i;
-                    update();
+        function initializeLauncher() {
+            // Get DOM elements
+            const carouselTrack = document.getElementById("carouselTrack");
+            const appBarContainer = document.getElementById("appBar");
+            const prevButton = document.getElementById("prevButton");
+            const nextButton = document.getElementById("nextButton");
+            const helpButton = document.getElementById("helpButton");
+            
+            // Get all app cards
+            const appCards = Array.from(carouselTrack.children);
+            const totalApps = appCards.length;
+            
+            // Current carousel index
+            let currentIndex = 0;
+
+            // Initialize app bar
+            initializeAppBar();
+
+            // Initialize app click handlers
+            initializeAppClickHandlers();
+
+            // Initialize navigation buttons
+            initializeNavigationButtons();
+
+            // Initialize help button
+            initializeHelpButton();
+
+            /**
+             * Update carousel position and active states
+             */
+            function updateCarousel() {
+                // Move carousel track
+                const offset = -currentIndex * 100;
+                carouselTrack.style.transform = `translateX(${offset}%)`;
+
+                // Update active app bar icon
+                const barIcons = appBarContainer.querySelectorAll(".app-bar-icon");
+                barIcons.forEach((icon, index) => {
+                    if (index === currentIndex) {
+                        icon.classList.add("active");
+                    } else {
+                        icon.classList.remove("active");
+                    }
                 });
-                dotsContainer.appendChild(dot);
             }
 
-            const dots = document.querySelectorAll(".dot");
-
-            function update() {
-                track.style.transform = `translateX(${-index * 100}%)`;
-                dots.forEach((d, i) => d.classList.toggle("active", i === index));
+            /**
+             * Initialize app bar with all app icons
+             */
+            function initializeAppBar() {
+                appCards.forEach((card, index) => {
+                    const icon = card.querySelector(".app-icon");
+                    const img = icon.querySelector("img");
+                    const url = icon.getAttribute("data-url");
+                    
+                    // Create app bar icon
+                    const barIcon = document.createElement("div");
+                    barIcon.className = "app-bar-icon";
+                    
+                    // Set first icon as active
+                    if (index === 0) {
+                        barIcon.classList.add("active");
+                    }
+                    
+                    // Clone the image
+                    const barImg = document.createElement("img");
+                    barImg.src = img.src;
+                    barImg.alt = img.alt;
+                    
+                    barIcon.appendChild(barImg);
+                    
+                    // Add click handler to navigate to this app
+                    barIcon.addEventListener("click", () => {
+                        currentIndex = index;
+                        updateCarousel();
+                    });
+                    
+                    appBarContainer.appendChild(barIcon);
+                });
             }
 
-            document.getElementById("btn-next").addEventListener("click", () => {
-                index = (index + 1) % total;
-                update();
-            });
+            /**
+             * Navigate to next app
+             */
+            function navigateNext() {
+                currentIndex = (currentIndex + 1) % totalApps;
+                updateCarousel();
+            }
 
-            document.getElementById("btn-prev").addEventListener("click", () => {
-                index = (index - 1 + total) % total;
-                update();
-            });
+            /**
+             * Navigate to previous app
+             */
+            function navigatePrevious() {
+                currentIndex = (currentIndex - 1 + totalApps) % totalApps;
+                updateCarousel();
+            }
 
-            // abrir apps
-            Array.from(document.querySelectorAll(".icon-circle")).forEach(el => {
-                el.addEventListener("click", () => {
-                    const url = el.getAttribute("data-url");
-                    if (!url) return;
+            /**
+             * Initialize navigation button handlers
+             */
+            function initializeNavigationButtons() {
+                nextButton.addEventListener("click", navigateNext);
+                prevButton.addEventListener("click", navigatePrevious);
+            }
 
-                    window.open(url, "_blank", "noopener,noreferrer");
+            /**
+             * Initialize click handlers for app icons
+             */
+            function initializeAppClickHandlers() {
+                const appIcons = document.querySelectorAll(".app-icon");
+                
+                appIcons.forEach(icon => {
+                    icon.addEventListener("click", () => {
+                        const url = icon.getAttribute("data-url");
+                        
+                        if (url) {
+                            window.open(url, "_blank", "noopener,noreferrer");
+                        }
+                    });
                 });
-            });
+            }
 
-            // help
-            document.getElementById("btn-help").addEventListener("click", () => {
-                window.open("https://colegioatlantico.tawk.help/", "_blank", "noopener,noreferrer");
-            });
-
-    
-        });
+            /**
+             * Initialize help button handler
+             */
+            function initializeHelpButton() {
+                helpButton.addEventListener("click", () => {
+                    window.open("https://colegioatlantico.tawk.help/", "_blank", "noopener,noreferrer");
+                });
+            }
+        }
     </script>
-
 </body>
 </html>
