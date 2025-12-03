@@ -3,255 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colégio Atlântico - Launcher</title>
-    <style>
-        /* Reset & Base Styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #0c1c3c, #11284d);
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* Logo Section */
-        .logo-container {
-            position: absolute;
-            top: 32px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-        }
-
-        .logo-container img {
-            width: 150px;
-            height: auto;
-            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
-            user-select: none;
-        }
-
-        /* Title Section */
-        .title-container {
-            position: absolute;
-            top: 120px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .title-container .subtitle {
-            font-size: 1.4rem;
-            color: #9bb3d6;
-            letter-spacing: 0.45em;
-            font-weight: 300;
-        }
-
-        .title-container .main-title {
-            font-size: 3.3rem;
-            color: #e8ecf5;
-            letter-spacing: 0.25em;
-            font-weight: 700;
-            margin-top: 8px;
-        }
-        .carousel-button svg {
-            width: 22px;
-            height: 22px;
-            stroke: #e8ecf5;
-        }
-
-        /* Carousel Container */
-        .carousel-container {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-            max-width: 90%;
-        }
-
-        .carousel-button {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .carousel-button:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: scale(1.05);
-        }
-
-        .carousel-viewport {
-            width: 280px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .carousel-track {
-            display: flex;
-            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* App Card */
-        .app-card {
-            min-width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            user-select: none;
-        }
-
-        .app-icon {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.55));
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
-            transition: all 0.25s ease;
-            cursor: pointer;
-        }
-
-        .app-icon:hover {
-            transform: scale(1.08) translateY(-3px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
-        }
-
-        .app-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            pointer-events: none;
-        }
-
-        .app-name {
-            margin-top: 12px;
-            color: #dfe4ef;
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* App Bar */
-        .app-bar {
-            position: absolute;
-            bottom: 80px;
-            display: flex;
-            gap: 12px;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 50px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .app-bar-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .app-bar-icon:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .app-bar-icon.active {
-            background: rgba(76, 168, 255, 0.3);
-            border-color: #4ca8ff;
-        }
-
-        .app-bar-icon img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            pointer-events: none;
-        }
-
-        /* Help Button */
-        .help-button {
-            position: fixed;
-            bottom: 22px;
-            right: 22px;
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-            cursor: pointer;
-            background: linear-gradient(135deg, #223a73, #16244d);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
-            transition: all 0.2s ease;
-        }
-
-        .help-button:hover {
-            transform: scale(1.08);
-        }
-
-        .help-button svg {
-            stroke: #ffbe57;
-            width: 26px;
-            height: 26px;
-        }
-
-        /* Leave Button */
-        .leave-button {
-            position: fixed;
-            bottom: 22px;
-            left: 22px;
-            padding: 10px 18px;
-            border-radius: 999px;
-            cursor: pointer;
-            background: linear-gradient(135deg, #772b2b, #b83434);
-            color: #fdf4f4;
-            font-size: 0.9rem;
-            font-weight: 600;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
-            transition: all 0.2s ease;
-        }
-
-        .leave-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.55);
-        }
-    </style>
+    <title>CA Launcher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Logo -->
     <div class="logo-container">
-        <img src="colegio_atlantico_logo.png" alt="Colégio Atlântico Logo">
+        <img src="/resources/images/colegio_atlantico_logo.png" alt="Colégio Atlântico Logo">
     </div>
 
     <!-- Title -->
@@ -275,7 +36,7 @@
                 <!-- Google -->
                 <div class="app-card">
                     <div class="app-icon" data-url="https://www.google.com">
-                        <img src="google.png" alt="Google">
+                        <img src="/resources/images/google.png" alt="Google">
                     </div>
                     <p class="app-name">Google</p>
                 </div>
@@ -283,7 +44,7 @@
                 <!-- YouTube -->
                 <div class="app-card">
                     <div class="app-icon" data-url="https://www.youtube.com">
-                        <img src="youtube.png" alt="YouTube">
+                        <img src="/resources/images/youtube.png" alt="YouTube">
                     </div>
                     <p class="app-name">YouTube</p>
                 </div>
@@ -291,7 +52,7 @@
                 <!-- Aula Digital -->
                 <div class="app-card">
                     <div class="app-icon" data-url="https://auladigital.com">
-                        <img src="aula_digital.png" alt="Aula Digital">
+                        <img src="/resources/images/aula_digital.png" alt="Aula Digital">
                     </div>
                     <p class="app-name">Aula Digital</p>
                 </div>
@@ -299,7 +60,7 @@
                 <!-- Escola Virtual -->
                 <div class="app-card">
                     <div class="app-icon" data-url="https://www.escolavirtual.pt">
-                        <img src="escola_virtual.png" alt="Escola Virtual">
+                        <img src="/resources/images/escola_virtual.png" alt="Escola Virtual">
                     </div>
                     <p class="app-name">Escola Virtual</p>
                 </div>
@@ -307,7 +68,7 @@
                 <!-- BlinkLearning -->
                 <div class="app-card">
                     <div class="app-icon" data-url="https://www.blinklearning.com/portal/home">
-                        <img src="blinklearning.png" alt="BlinkLearning">
+                        <img src="/resources/images/blinklearning.png" alt="BlinkLearning">
                     </div>
                     <p class="app-name">BlinkLearning</p>
                 </div>
@@ -315,7 +76,7 @@
                 <!-- Microsoft Office -->
                 <div class="app-card">
                     <div class="app-icon" data-url="https://www.office.com">
-                        <img src="microsoft.png" alt="Microsoft Office">
+                        <img src="/resources/images/microsoft.png" alt="Microsoft Office">
                     </div>
                     <p class="app-name">Microsoft Office</p>
                 </div>
@@ -323,7 +84,7 @@
                 <!-- Teams -->
                 <div class="app-card">
                     <div class="app-icon" data-url="https://teams.microsoft.com/v2/">
-                        <img src="teams.png" alt="Teams">
+                        <img src="/resources/images/teams.png" alt="Teams">
                     </div>
                     <p class="app-name">Teams</p>
                 </div>
@@ -331,9 +92,27 @@
                 <!-- Cambridge GO -->
                 <div class="app-card">
                     <div class="app-icon" data-url="https://www.cambridge.org/go/login">
-                        <img src="cambridgego.png" alt="Cambridge GO">
+                        <img src="/resources/images/cambridgego.png" alt="Cambridge GO">
                     </div>
                     <p class="app-name">Cambridge GO</p>
+                </div>
+
+                <!-- GeoGebra -->
+                <div class="app-card">
+                    <div class="app-icon" data-url="https://www.geogebra.org/calculator">
+                        <img src="/resources/images/geogebra.png" alt="GeoGebra">
+                    </div>
+                    <p class="app-name">GeoGebra</p>
+                </div>
+
+                <!-- Tools Menu -->
+                <div class="app-card">
+                    <div class="app-icon" data-action="open-tools">
+                        <svg class="tools-icon" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                        </svg>
+                    </div>
+                    <p class="app-name">Ferramentas</p>
                 </div>
             </div>
         </div>
@@ -358,141 +137,133 @@
         </svg>
     </button>
 
-    <script>
-        // Wait for DOM to load
-        document.addEventListener("DOMContentLoaded", initializeLauncher);
-
-        function initializeLauncher() {
-            // Get DOM elements
-            const carouselTrack = document.getElementById("carouselTrack");
-            const appBarContainer = document.getElementById("appBar");
-            const prevButton = document.getElementById("prevButton");
-            const nextButton = document.getElementById("nextButton");
-            const helpButton = document.getElementById("helpButton");
+    <!-- Tools Menu Overlay -->
+    <div class="tools-menu-overlay" id="toolsMenuOverlay">
+        <button class="close-tools-menu" id="closeToolsMenu" aria-label="Voltar">
+            <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </button>
+        
+        <div class="tools-menu-content">
+            <h2 class="tools-menu-title">FERRAMENTAS</h2>
             
-            // Get all app cards
-            const appCards = Array.from(carouselTrack.children);
-            const totalApps = appCards.length;
-            
-            // Current carousel index
-            let currentIndex = 0;
+            <div class="tools-grid">
+                <!-- Ecrã Branco Tool -->
+                <div class="tool-card" data-action="blank-screen">
+                    <div class="tool-icon">
+                        <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="18" height="18"></rect>
+                        </svg>
+                    </div>
+                    <p class="tool-name">Ecrã Branco</p>
+                </div>
 
-            // Initialize app bar
-            initializeAppBar();
+                <!-- Timer Tool -->
+                <div class="tool-card" data-action="timer">
+                    <div class="tool-icon">
+                        <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <circle cx="12" cy="13" r="8"></circle>
+                            <polyline points="12 9 12 13 15 15"></polyline>
+                            <path d="M9 2h6"></path>
+                            <path d="M12 2v4"></path>
+                        </svg>
+                    </div>
+                    <p class="tool-name">Temporizador</p>
+                </div>
 
-            // Initialize app click handlers
-            initializeAppClickHandlers();
+                <!-- Wheel of Choices Tool -->
+                <div class="tool-card" data-action="wheel">
+                    <div class="tool-icon">
+                        <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="2" x2="12" y2="12"></line>
+                            <line x1="12" y1="12" x2="22" y2="12"></line>
+                            <line x1="12" y1="12" x2="5" y2="19"></line>
+                        </svg>
+                    </div>
+                    <p class="tool-name">Roda de Escolhas</p>
+                </div>
 
-            // Initialize navigation buttons
-            initializeNavigationButtons();
+                <!-- Calculator Tool -->
+                <div class="tool-card" data-action="calculator">
+                    <div class="tool-icon">
+                        <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+                            <line x1="8" y1="6" x2="16" y2="6"></line>
+                            <line x1="8" y1="10" x2="16" y2="10"></line>
+                            <line x1="8" y1="14" x2="16" y2="14"></line>
+                            <line x1="8" y1="18" x2="10" y2="18"></line>
+                            <line x1="14" y1="18" x2="16" y2="18"></line>
+                        </svg>
+                    </div>
+                    <p class="tool-name">Calculadora</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            // Initialize help button
-            initializeHelpButton();
+    <!-- Blank Screen Overlay -->
+    <div class="blank-screen-overlay" id="blankScreenOverlay">
+        <button class="close-blank-screen" id="closeBlankScreen" aria-label="Fechar">
+            <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </div>
 
-            /**
-             * Update carousel position and active states
-             */
-            function updateCarousel() {
-                // Move carousel track
-                const offset = -currentIndex * 100;
-                carouselTrack.style.transform = `translateX(${offset}%)`;
+    <!-- Timer Overlay -->
+    <div class="tool-overlay" id="timerOverlay">
+        <button class="close-tool" id="closeTimer" aria-label="Fechar">
+            <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div class="timer-content">
+            <h2 class="tool-title">TEMPORIZADOR</h2>
+            <div class="timer-display" id="timerDisplay">00:00</div>
+            <div class="timer-controls">
+                <input type="number" id="timerMinutes" min="0" max="99" value="5" placeholder="Min">
+                <span>:</span>
+                <input type="number" id="timerSeconds" min="0" max="59" value="0" placeholder="Seg">
+            </div>
+            <div class="timer-buttons">
+                <button class="timer-button" id="startTimer">Iniciar</button>
+                <button class="timer-button" id="pauseTimer">Pausar</button>
+                <button class="timer-button" id="resetTimer">Reiniciar</button>
+            </div>
+        </div>
+    </div>
 
-                // Update active app bar icon
-                const barIcons = appBarContainer.querySelectorAll(".app-bar-icon");
-                barIcons.forEach((icon, index) => {
-                    if (index === currentIndex) {
-                        icon.classList.add("active");
-                    } else {
-                        icon.classList.remove("active");
-                    }
-                });
-            }
+    <!-- Wheel Overlay -->
+    <div class="tool-overlay" id="wheelOverlay">
+        <button class="close-tool" id="closeWheel" aria-label="Fechar">
+            <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div class="wheel-content">
+            <iframe src="https://wheelofnames.com/" frameborder="0" class="wheel-iframe" title="Wheel of Names"></iframe>
+        </div>
+    </div>
 
-            /**
-             * Initialize app bar with all app icons
-             */
-            function initializeAppBar() {
-                appCards.forEach((card, index) => {
-                    const icon = card.querySelector(".app-icon");
-                    const img = icon.querySelector("img");
-                    const url = icon.getAttribute("data-url");
-                    
-                    // Create app bar icon
-                    const barIcon = document.createElement("div");
-                    barIcon.className = "app-bar-icon";
-                    
-                    // Set first icon as active
-                    if (index === 0) {
-                        barIcon.classList.add("active");
-                    }
-                    
-                    // Clone the image
-                    const barImg = document.createElement("img");
-                    barImg.src = img.src;
-                    barImg.alt = img.alt;
-                    
-                    barIcon.appendChild(barImg);
-                    
-                    // Add click handler to navigate to this app
-                    barIcon.addEventListener("click", () => {
-                        currentIndex = index;
-                        updateCarousel();
-                    });
-                    
-                    appBarContainer.appendChild(barIcon);
-                });
-            }
+    <!-- Calculator Overlay -->
+    <div class="tool-overlay" id="calculatorOverlay">
+        <button class="close-tool" id="closeCalculator" aria-label="Fechar">
+            <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        <div class="calculator-content">
+            <iframe src="https://www.desmos.com/scientific" name="Desmos Scientific Calculator" scrolling="no" frameborder="0" class="calculator-iframe" allowfullscreen title="Desmos Scientific Calculator"></iframe>
+        </div>
+    </div>
 
-            /**
-             * Navigate to next app
-             */
-            function navigateNext() {
-                currentIndex = (currentIndex + 1) % totalApps;
-                updateCarousel();
-            }
-
-            /**
-             * Navigate to previous app
-             */
-            function navigatePrevious() {
-                currentIndex = (currentIndex - 1 + totalApps) % totalApps;
-                updateCarousel();
-            }
-
-            /**
-             * Initialize navigation button handlers
-             */
-            function initializeNavigationButtons() {
-                nextButton.addEventListener("click", navigateNext);
-                prevButton.addEventListener("click", navigatePrevious);
-            }
-
-            /**
-             * Initialize click handlers for app icons
-             */
-            function initializeAppClickHandlers() {
-                const appIcons = document.querySelectorAll(".app-icon");
-                
-                appIcons.forEach(icon => {
-                    icon.addEventListener("click", () => {
-                        const url = icon.getAttribute("data-url");
-                        
-                        if (url) {
-                            window.open(url, "_blank", "noopener,noreferrer");
-                        }
-                    });
-                });
-            }
-
-            /**
-             * Initialize help button handler
-             */
-            function initializeHelpButton() {
-                helpButton.addEventListener("click", () => {
-                    window.open("https://colegioatlantico.tawk.help/", "_blank", "noopener,noreferrer");
-                });
-            }
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
