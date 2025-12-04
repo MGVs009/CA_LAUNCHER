@@ -90,8 +90,24 @@ function initializePeer() {
         config: {
             'iceServers': [
                 { urls: 'stun:stun.l.google.com:19302' },
-                { urls: 'stun:stun1.l.google.com:19302' }
-            ]
+                { urls: 'stun:stun1.l.google.com:19302' },
+                { 
+                    urls: 'turn:openrelay.metered.ca:80',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                },
+                {
+                    urls: 'turn:openrelay.metered.ca:443',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                },
+                {
+                    urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                }
+            ],
+            'iceTransportPolicy': 'all'
         }
     });
 
@@ -131,15 +147,16 @@ async function startScreenShareAndConnect() {
     try {
         showStatus('A pedir permissão para partilhar ecrã...', 'warning');
         
-        // Request screen capture
+        // Request screen capture with more flexible constraints
         localStream = await navigator.mediaDevices.getDisplayMedia({
             video: {
                 cursor: 'always',
-                displaySurface: 'monitor'
+                frameRate: { ideal: 30, max: 60 }
             },
             audio: false
         });
 
+        console.log('Screen capture started:', localStream.getVideoTracks()[0].getSettings());
         showStatus('A ligar ao quadro...', 'warning');
         
         // Initialize peer if not already

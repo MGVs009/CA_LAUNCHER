@@ -53,8 +53,24 @@ function initializePeer(peerId) {
         config: {
             'iceServers': [
                 { urls: 'stun:stun.l.google.com:19302' },
-                { urls: 'stun:stun1.l.google.com:19302' }
-            ]
+                { urls: 'stun:stun1.l.google.com:19302' },
+                { 
+                    urls: 'turn:openrelay.metered.ca:80',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                },
+                {
+                    urls: 'turn:openrelay.metered.ca:443',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                },
+                {
+                    urls: 'turn:openrelay.metered.ca:443?transport=tcp',
+                    username: 'openrelayproject',
+                    credential: 'openrelayproject'
+                }
+            ],
+            'iceTransportPolicy': 'all'
         },
         debug: 2 // Enable debug logging
     });
@@ -76,11 +92,41 @@ function initializePeer(peerId) {
 
         call.on('stream', (remoteStream) => {
             console.log('Remote stream received!');
+            console.log('Stream details:', {
+                id: remoteStream.id,
+                active: remoteStream.active,
+                videoTracks: remoteStream.getVideoTracks().length,
+                audioTracks: remoteStream.getAudioTracks().length
+            });
+            
+            if (remoteStream.getVideoTracks().length > 0) {
+                const videoTrack = remoteStream.getVideoTracks()[0];
+                console.log('Video track settings:', videoTrack.getSettings());
+                console.log('Video track enabled:', videoTrack.enabled);
+                console.log('Video track muted:', videoTrack.muted);
+                console.log('Video track readyState:', videoTrack.readyState);
+            }
+            
             showStatus('Ligado!', 'success');
             
             // Display the remote video
             const videoElement = document.getElementById('remoteVideo');
             videoElement.srcObject = remoteStream;
+            
+            // Force video to play
+            videoElement.play().catch(err => {
+                console.error('Error playing video:', err);
+            });
+            
+            // Log video element state after setting stream
+            videoElement.addEventListener('loadedmetadata', () => {
+                console.log('Video metadata loaded:', {
+                    videoWidth: videoElement.videoWidth,
+                    videoHeight: videoElement.videoHeight,
+                    duration: videoElement.duration,
+                    paused: videoElement.paused
+                });
+            });
             
             // Show video container, hide waiting
             document.getElementById('waitingContainer').style.display = 'none';
@@ -159,11 +205,18 @@ function resetToWaiting() {
         document.exitFullscreen().catch(err => console.log('Error exiting fullscreen:', err));
     }
     
+    // Show beta banner again
+    const betaBanner = document.getElementById('betaBanner');
+    if (betaBanner) {
+        betaBanner.style.display = 'flex';
+    }
+    
     showStatus('A aguardar partilha...', 'success');
 }
 
 function requestFullscreen() {
     const elem = document.documentElement;
+    const betaBanner = document.getElementById('betaBanner');
     
     try {
         if (elem.requestFullscreen) {
@@ -174,6 +227,11 @@ function requestFullscreen() {
             elem.msRequestFullscreen();
         }
         console.log('Fullscreen requested');
+        
+        // Hide beta banner in fullscreen
+        if (betaBanner) {
+            betaBanner.style.display = 'none';
+        }
     } catch (err) {
         console.error('Error requesting fullscreen:', err);
     }
