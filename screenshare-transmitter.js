@@ -89,8 +89,20 @@ function initializePeer() {
     peer = new Peer({
         config: {
             'iceServers': [
+                // Google STUN servers
                 { urls: 'stun:stun.l.google.com:19302' },
                 { urls: 'stun:stun1.l.google.com:19302' },
+                { urls: 'stun:stun2.l.google.com:19302' },
+                { urls: 'stun:stun3.l.google.com:19302' },
+                { urls: 'stun:stun4.l.google.com:19302' },
+                // Twilio STUN
+                { urls: 'stun:global.stun.twilio.com:3478' },
+                // Free TURN servers - multiple options for redundancy
+                { 
+                    urls: 'turn:numb.viagenie.ca',
+                    username: 'webrtc@live.com',
+                    credential: 'muazkh'
+                },
                 { 
                     urls: 'turn:openrelay.metered.ca:80',
                     username: 'openrelayproject',
@@ -102,12 +114,13 @@ function initializePeer() {
                     credential: 'openrelayproject'
                 },
                 {
-                    urls: 'turn:openrelay.metered.ca:443?transport=tcp',
-                    username: 'openrelayproject',
-                    credential: 'openrelayproject'
+                    urls: 'turn:relay1.expressturn.com:3478',
+                    username: 'efE4K6Z42FZAZQPBHC',
+                    credential: 'Uc4ZYhKguShSD3SU'
                 }
             ],
-            'iceTransportPolicy': 'all'
+            'iceTransportPolicy': 'all',
+            'iceCandidatePoolSize': 10
         }
     });
 
