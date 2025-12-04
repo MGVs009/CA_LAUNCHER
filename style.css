@@ -151,6 +151,12 @@ body {
             stroke: #ffffff;
         }
 
+        .screenshare-icon {
+            width: 80px;
+            height: 80px;
+            stroke: #ffffff;
+        }
+
         .geogebra-icon {
             width: 80px;
             height: 80px;
