@@ -20,9 +20,12 @@ function initializeReceiver() {
     const currentUrl = window.location.href;
     const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/'));
     const shareLink = `${baseUrl}/screenshare-transmitter.html?code=${code}`;
-    document.getElementById('linkDisplay').textContent = shareLink;
     
-    // Generate QR code
+    // Display friendly URL without code
+    const displayLink = `screen.contents.help`;
+    document.getElementById('linkDisplay').textContent = displayLink;
+    
+    // Generate QR code (using actual URL)
     const qrContainer = document.getElementById('qrcode');
     qrContainer.innerHTML = '';
     
@@ -52,29 +55,14 @@ function initializePeer(peerId) {
     peer = new Peer(peerId, {
         config: {
             'iceServers': [
-                // Google STUN servers
+                // Google STUN servers (just 2 is enough)
                 { urls: 'stun:stun.l.google.com:19302' },
                 { urls: 'stun:stun1.l.google.com:19302' },
-                { urls: 'stun:stun2.l.google.com:19302' },
-                { urls: 'stun:stun3.l.google.com:19302' },
-                { urls: 'stun:stun4.l.google.com:19302' },
-                // Twilio STUN
-                { urls: 'stun:global.stun.twilio.com:3478' },
-                // Free TURN servers - multiple options for redundancy
+                // TURN servers for fallback
                 { 
                     urls: 'turn:numb.viagenie.ca',
                     username: 'webrtc@live.com',
                     credential: 'muazkh'
-                },
-                { 
-                    urls: 'turn:openrelay.metered.ca:80',
-                    username: 'openrelayproject',
-                    credential: 'openrelayproject'
-                },
-                {
-                    urls: 'turn:openrelay.metered.ca:443',
-                    username: 'openrelayproject',
-                    credential: 'openrelayproject'
                 },
                 {
                     urls: 'turn:relay1.expressturn.com:3478',
@@ -125,10 +113,26 @@ function initializePeer(peerId) {
             // Display the remote video
             const videoElement = document.getElementById('remoteVideo');
             videoElement.srcObject = remoteStream;
+            videoElement.muted = true; // Mute to allow autoplay
+            videoElement.playsInline = true;
             
-            // Force video to play
-            videoElement.play().catch(err => {
+            // Show video container, hide waiting FIRST
+            document.getElementById('waitingContainer').style.display = 'none';
+            document.getElementById('videoContainer').style.display = 'flex';
+            
+            // Try to play video (with muted to bypass autoplay restrictions)
+            videoElement.play().then(() => {
+                console.log('Video playing successfully');
+                // Request fullscreen after a short delay to allow user interaction
+                setTimeout(() => {
+                    requestFullscreen();
+                }, 100);
+            }).catch(err => {
                 console.error('Error playing video:', err);
+                // Still try fullscreen even if autoplay fails
+                setTimeout(() => {
+                    requestFullscreen();
+                }, 100);
             });
             
             // Log video element state after setting stream
@@ -140,13 +144,6 @@ function initializePeer(peerId) {
                     paused: videoElement.paused
                 });
             });
-            
-            // Show video container, hide waiting
-            document.getElementById('waitingContainer').style.display = 'none';
-            document.getElementById('videoContainer').style.display = 'flex';
-            
-            // Request fullscreen
-            requestFullscreen();
         });
 
         call.on('close', () => {

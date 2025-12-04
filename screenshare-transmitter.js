@@ -89,29 +89,14 @@ function initializePeer() {
     peer = new Peer({
         config: {
             'iceServers': [
-                // Google STUN servers
+                // Google STUN servers (just 2 is enough)
                 { urls: 'stun:stun.l.google.com:19302' },
                 { urls: 'stun:stun1.l.google.com:19302' },
-                { urls: 'stun:stun2.l.google.com:19302' },
-                { urls: 'stun:stun3.l.google.com:19302' },
-                { urls: 'stun:stun4.l.google.com:19302' },
-                // Twilio STUN
-                { urls: 'stun:global.stun.twilio.com:3478' },
-                // Free TURN servers - multiple options for redundancy
+                // TURN servers for fallback
                 { 
                     urls: 'turn:numb.viagenie.ca',
                     username: 'webrtc@live.com',
                     credential: 'muazkh'
-                },
-                { 
-                    urls: 'turn:openrelay.metered.ca:80',
-                    username: 'openrelayproject',
-                    credential: 'openrelayproject'
-                },
-                {
-                    urls: 'turn:openrelay.metered.ca:443',
-                    username: 'openrelayproject',
-                    credential: 'openrelayproject'
                 },
                 {
                     urls: 'turn:relay1.expressturn.com:3478',
@@ -164,12 +149,38 @@ async function startScreenShareAndConnect() {
         localStream = await navigator.mediaDevices.getDisplayMedia({
             video: {
                 cursor: 'always',
-                frameRate: { ideal: 30, max: 60 }
+                frameRate: { ideal: 30, max: 60 },
+                width: { ideal: 1920 },
+                height: { ideal: 1080 }
             },
             audio: false
         });
 
-        console.log('Screen capture started:', localStream.getVideoTracks()[0].getSettings());
+        // Verify we got a valid video track
+        const videoTracks = localStream.getVideoTracks();
+        if (videoTracks.length === 0) {
+            throw new Error('No video track in captured stream');
+        }
+        
+        const videoTrack = videoTracks[0];
+        const settings = videoTrack.getSettings();
+        console.log('Screen capture started:', settings);
+        console.log('Video track state:', {
+            enabled: videoTrack.enabled,
+            muted: videoTrack.muted,
+            readyState: videoTrack.readyState,
+            label: videoTrack.label
+        });
+        
+        // Make sure track is enabled and not muted
+        if (videoTrack.muted) {
+            console.warn('Video track is muted!');
+        }
+        if (!videoTrack.enabled) {
+            console.warn('Video track is disabled, enabling...');
+            videoTrack.enabled = true;
+        }
+        
         showStatus('A ligar ao quadro...', 'warning');
         
         // Initialize peer if not already
@@ -198,11 +209,13 @@ async function startScreenShareAndConnect() {
         
         let errorMessage = 'Erro ao partilhar ecrã';
         if (err.name === 'NotAllowedError') {
-            errorMessage = 'Permissão negada. Autoriza a partilha de ecrã.';
+            errorMessage = 'Permissão negada. No macOS, vai a Definições do Sistema > Privacidade e Segurança > Gravação de Ecrã e autoriza o teu navegador.';
         } else if (err.name === 'NotFoundError') {
             errorMessage = 'Nenhum ecrã disponível para partilhar.';
         } else if (err.name === 'NotSupportedError') {
             errorMessage = 'Partilha de ecrã não suportada neste navegador.';
+        } else if (err.name === 'NotReadableError') {
+            errorMessage = 'Não foi possível aceder ao ecrã. No macOS, verifica as permissões de Gravação de Ecrã.';
         }
         
         showStatus(errorMessage, 'error');
