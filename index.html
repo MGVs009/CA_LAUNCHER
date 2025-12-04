@@ -10,15 +10,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Logo -->
-    <div class="logo-container">
-        <img src="/resources/images/colegio_atlantico_logo.png" alt="Colégio Atlântico Logo">
-    </div>
-
-    <!-- Title -->
-    <div class="title-container">
-        <h2 class="subtitle">COLÉGIO ATLÂNTICO</h2>
-        <h1 class="main-title">LAUNCHER</h1>
+    <!-- Header -->
+    <div class="header-container">
+        <img src="/resources/images/colegio_atlantico_logo.png" alt="Colégio Atlântico Logo" class="header-logo">
+        <div class="header-text">
+            <h2 class="header-subtitle">Colégio Atlântico</h2>
+            <h1 class="header-title">App Launcher</h1>
+        </div>
     </div>
 
     <!-- Carousel -->
@@ -147,7 +145,7 @@
         </button>
         
         <div class="tools-menu-content">
-            <h2 class="tools-menu-title">FERRAMENTAS</h2>
+            <h2 class="tools-menu-title">ferramentas</h2>
             
             <div class="tools-grid">
                 <!-- Ecrã Branco Tool -->
@@ -253,13 +251,16 @@
 
     <!-- Calculator Overlay -->
     <div class="tool-overlay" id="calculatorOverlay">
-        <button class="close-tool" id="closeCalculator" aria-label="Fechar">
-            <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-        </button>
         <div class="calculator-content">
+            <div class="calculator-header">
+                <span class="calculator-title">Calculadora</span>
+                <button class="close-tool" id="closeCalculator" aria-label="Fechar">
+                    <svg fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
             <iframe src="https://www.desmos.com/scientific" name="Desmos Scientific Calculator" scrolling="no" frameborder="0" class="calculator-iframe" allowfullscreen title="Desmos Scientific Calculator"></iframe>
         </div>
     </div>

@@ -201,7 +201,7 @@
                             wheelOverlay.classList.add("active");
                         } else if (action === "calculator") {
                             toolsMenuOverlay.classList.remove("active");
-                            calculatorOverlay.classList.add("active");
+                            openCalculatorPopup();
                         }
                     });
                 });
@@ -388,14 +388,22 @@
              * Initialize Calculator functionality
              */
             function initializeCalculator() {
-                closeCalculator.addEventListener("click", () => {
-                    calculatorOverlay.classList.remove("active");
-                });
+                // Calculator now opens in a popup window, no initialization needed
+            }
 
-                document.addEventListener("keydown", (e) => {
-                    if (e.key === "Escape" && calculatorOverlay.classList.contains("active")) {
-                        calculatorOverlay.classList.remove("active");
-                    }
-                });
+            /**
+             * Open calculator in a popup window
+             */
+            function openCalculatorPopup() {
+                const width = 900;
+                const height = 700;
+                const left = (screen.width - width) / 2;
+                const top = (screen.height - height) / 2;
+                
+                window.open(
+                    'https://www.desmos.com/scientific',
+                    'CalculatorPopup',
+                    `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=no,status=no,menubar=no,toolbar=no,location=no`
+                );
             }
         }
