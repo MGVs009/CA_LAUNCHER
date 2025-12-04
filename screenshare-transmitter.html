@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CA Launcher - Partilhar Ecrã</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/peerjs@1.5.1/dist/peerjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #f8f9fa, #e9ecef); min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+    <!-- Beta Warning Banner -->
+    <div style="position: fixed; top: 0; left: 0; right: 0; background: rgba(255, 193, 7, 0.95); padding: 12px 20px; display: flex; align-items: center; justify-content: center; gap: 12px; z-index: 2000; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);">
+        <svg style="width: 20px; height: 20px; fill: #000;" viewBox="0 0 24 24">
+            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+        </svg>
+        <span style="color: #000; font-weight: 600; font-size: 0.95rem;">Funcionalidade em Beta</span>
+        <span style="color: #000; font-size: 0.9rem;">•</span>
+        <a href="https://colegioatlantico.tawk.help/article/partilha-de-ecr%C3%A3" target="_blank" style="color: #000; text-decoration: underline; font-size: 0.9rem;">
+            Ver Ajuda
+        </a>
+    </div>
+
+    <div style="width: 100%; max-width: 500px; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; gap: 32px; margin-top: 48px;">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+            <img src="/resources/images/colegio_atlantico_logo.png" alt="Logo" style="width: 80px; height: 80px; padding: 10px; background: white; border-radius: 12px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+            <h1 style="font-size: 2rem; color: #212529; margin: 0; text-align: center;">Partilhar Ecrã</h1>
+            <p style="font-size: 1rem; color: #6c757d; margin: 0;">Colégio Atlântico</p>
+        </div>
+
+        <div id="codeInputSection" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 24px;">
+            <p style="font-size: 1.2rem; color: #212529; margin: 0;">Insere o código do quadro:</p>
+            <div style="display: flex; gap: 12px;">
+                <input type="text" maxlength="1" class="code-digit" id="digit1" pattern="[0-9]" inputmode="numeric" style="width: 50px; height: 70px; font-size: 2.5rem; font-weight: 700; text-align: center; background: white; border: 2px solid #dee2e6; border-radius: 8px; color: #212529;">
+                <input type="text" maxlength="1" class="code-digit" id="digit2" pattern="[0-9]" inputmode="numeric" style="width: 50px; height: 70px; font-size: 2.5rem; font-weight: 700; text-align: center; background: white; border: 2px solid #dee2e6; border-radius: 8px; color: #212529;">
+                <input type="text" maxlength="1" class="code-digit" id="digit3" pattern="[0-9]" inputmode="numeric" style="width: 50px; height: 70px; font-size: 2.5rem; font-weight: 700; text-align: center; background: white; border: 2px solid #dee2e6; border-radius: 8px; color: #212529;">
+                <input type="text" maxlength="1" class="code-digit" id="digit4" pattern="[0-9]" inputmode="numeric" style="width: 50px; height: 70px; font-size: 2.5rem; font-weight: 700; text-align: center; background: white; border: 2px solid #dee2e6; border-radius: 8px; color: #212529;">
+                <input type="text" maxlength="1" class="code-digit" id="digit5" pattern="[0-9]" inputmode="numeric" style="width: 50px; height: 70px; font-size: 2.5rem; font-weight: 700; text-align: center; background: white; border: 2px solid #dee2e6; border-radius: 8px; color: #212529;">
+                <input type="text" maxlength="1" class="code-digit" id="digit6" pattern="[0-9]" inputmode="numeric" style="width: 50px; height: 70px; font-size: 2.5rem; font-weight: 700; text-align: center; background: white; border: 2px solid #dee2e6; border-radius: 8px; color: #212529;">
+            </div>
+            <button id="connectButton" style="padding: 14px 48px; font-size: 1.1rem; font-weight: 600; background: linear-gradient(135deg, #51cf66, #37b24d); border: none; border-radius: 8px; color: white; cursor: pointer; font-family: 'Inter', sans-serif;">Ligar e Partilhar</button>
+        </div>
+
+        <div id="sharingSection" style="width: 100%; display: none; flex-direction: column; align-items: center; gap: 24px;">
+            <div style="width: 80px; height: 80px; border: 4px solid #51cf66; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <p style="font-size: 1.2rem; color: #212529; margin: 0; text-align: center;">A partilhar ecrã...</p>
+            <button id="stopButton" style="padding: 14px 48px; font-size: 1.1rem; font-weight: 600; background: rgba(255, 107, 107, 0.9); border: none; border-radius: 8px; color: white; cursor: pointer; font-family: 'Inter', sans-serif;">Parar</button>
+        </div>
+
+        <div id="statusMessage" style="font-size: 1rem; color: #6c757d; text-align: center; padding: 12px; border-radius: 8px; min-height: 44px;"></div>
+
+        <p style="font-size: 0.9rem; color: #6c757d; text-align: center; line-height: 1.5; margin: 0;">
+            Insere o código mostrado no quadro para começar a partilhar o teu ecrã.
+        </p>
+    </div>
+
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .code-digit:focus {
+            outline: none;
+            border-color: #4a90e2 !important;
+            background: #f8f9fa !important;
+        }
+    </style>
+
+    <script src="screenshare-transmitter.js"></script>
+</body>
+</html>
